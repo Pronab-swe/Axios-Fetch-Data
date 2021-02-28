@@ -1,4 +1,5 @@
 //Gifted code from Mokbul vai for fetch all api data(URL)
+//In this project that js file wasn't used
 
 
 

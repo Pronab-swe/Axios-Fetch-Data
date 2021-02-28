@@ -9,30 +9,49 @@ class PersonPost extends Component {
     Password: "",
   };
 
+  header = {
+    headers: {
+      "Content-Type": "application/json",
+      Module: "JW9tc0ByZWRsdGQl",
+    },
+  };
+
   changehandler = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  submithandler = (event) => {
+  submithandler = async (event) => {
     event.preventDefault();
-
-    let { UserId, Password } = this.state;
-
-    axios({
-      method: "post",
-      url: "http://oms.redltd.tech:9004/api/auth/userlogin/",
-      data: { UserId, Password },
-      headers: {
-        "Content-Type": "application/json",
-        Module: "JW9tc0ByZWRsdGQl",
-      },
-    })
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) => {
+    try {
+      const response = await axios.post(
+        `http://oms.redltd.tech:9004/api/auth/userlogin/`,
+        this.state,
+        this.header
+      );
+      if (response.status === 200) {
+          console.log(response.data.data);
+      }
+    } catch (error) {
+      if (error) {
         console.log(error.response);
-      });
+      }
+    }
+
+    // axios({
+    //   method: "post",
+    //   url: "http://oms.redltd.tech:9004/api/auth/userlogin/",
+    //   data: { UserId, Password },
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Module: "JW9tc0ByZWRsdGQl",
+    //   },
+    // })
+    //   .then((responseJson) => {
+    //     console.log(responseJson.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response);
+    //   });
   };
 
   render() {
@@ -40,7 +59,7 @@ class PersonPost extends Component {
       <div>
         <div className="container">
           <Form onSubmit={this.submithandler}>
-            <label>
+            <label className="Row col-md-3">
               Person ID:
               <input
                 className="form-control"
@@ -50,7 +69,7 @@ class PersonPost extends Component {
               />
             </label>
 
-            <label>
+            <label className="Row col-md-3">
               Password:
               <input
                 className="form-control"
@@ -59,7 +78,7 @@ class PersonPost extends Component {
                 onChange={this.changehandler}
               />
             </label>
-            <div>
+            <div className="pl-3">
               <Button className="btn btn-primary" type="submit">
                 LOGIN
               </Button>
